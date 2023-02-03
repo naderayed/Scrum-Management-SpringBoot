@@ -1,6 +1,7 @@
 package com.nader.scrum.management.entities;
 
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -16,9 +17,12 @@ import java.util.List;
 @Entity
 
 public class Project {
-    /*note that mappedBy is always used in bidirectional relation and in the case of OneToMany or ManyToOne we mapped
-    by the child, end for the ManyToMany Or OneToOne we check the logic or the description
+    /*note that mappedBy is always used in bidirectional relation,
+    in the case of OneToMany or ManyToOne we mapped
+    by the child, and for the ManyToMany Or OneToOne we check the logic or the description
     * */
+
+    /*all cascade and jsonIgnore.. from project description */
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long idProject;
@@ -26,7 +30,11 @@ public class Project {
     private String projectDescription;
 
     @ManyToMany(mappedBy = "developersProjects")
+    @JsonIgnore
+    @ToString.Exclude
     private List<AppUser> appUsers;
-    @OneToMany(mappedBy = "project")
+
+    @OneToMany(mappedBy = "project",cascade = CascadeType.ALL)
+    @ToString.Exclude
     private List<Sprint> sprints;
 }

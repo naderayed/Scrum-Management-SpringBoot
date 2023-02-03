@@ -5,6 +5,8 @@ import com.nader.scrum.management.repositories.ProjectRepo;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 @RequiredArgsConstructor
 public class ProjectService implements IProjectService,ICrud<Project>{
@@ -36,4 +38,11 @@ public class ProjectService implements IProjectService,ICrud<Project>{
         projectRepo.deleteById(id);
 
     }
+
+    @Override
+    public List<Project> getAllProjects() {
+        return projectRepo.findAll();
+    }
+
+
 }
