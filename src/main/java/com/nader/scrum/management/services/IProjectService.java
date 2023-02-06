@@ -8,4 +8,6 @@ public interface IProjectService {
 
     List<Project> getAllProjects();
 
+    List<Project> getProjectsByScrumMaster(String fName, String lName);
+
 }

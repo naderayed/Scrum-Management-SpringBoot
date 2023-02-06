@@ -40,4 +40,9 @@ public class ProjectController {
     public List<Project> getAllProjects() {
         return iProjectService.getAllProjects();
     }
+
+    @GetMapping("getProjectsByScrumMaster")
+    public List<Project> getProjectsByScrumMaster(@RequestParam String fName, String lName) {
+        return iProjectService.getProjectsByScrumMaster(fName, lName);
+    }
 }

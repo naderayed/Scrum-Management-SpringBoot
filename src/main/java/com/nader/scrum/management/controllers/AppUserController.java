@@ -42,7 +42,12 @@ public class AppUserController {
     }
 
     @PutMapping("assignProjectToDeveloper")
-    public void assignProjectToDeveloper(@RequestParam int projectId, int devId){
-        iAppUserService.assignProjectToDeveloper(projectId,devId);
+    public void assignProjectToDeveloper(@RequestParam int projectId, int devId) {
+        iAppUserService.assignProjectToDeveloper(projectId, devId);
+    }
+
+    @PutMapping("assignProjectToScrumMaster")
+    public void assignProjectToScrumMaster(int projectId, String fName, String lName) {
+        iAppUserService.assignProjectToScrumMaster(projectId, fName, lName);
     }
 }
