@@ -25,6 +25,8 @@ public class Sprint {
     private String descriptionSprint;
     @Temporal(TemporalType.DATE)
     private Date startDate;
-    @ManyToOne
+
+
+    @ManyToOne()
     private Project project;
 }

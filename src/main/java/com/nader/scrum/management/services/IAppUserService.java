@@ -9,4 +9,5 @@ public interface IAppUserService {
     List<AppUser> getAllUsers();
 
     void assignProjectToDeveloper(int projectId, int devId);
+     void assignProjectToScrumMaster(int projectId, String fName, String lName);
 }

@@ -64,4 +64,15 @@ public class AppUserService implements IAppUserService, ICrud<AppUser> {
             throw new RuntimeException("User Must be Developer Role");
 
     }
+
+    @Override
+    public void assignProjectToScrumMaster(int projectId, String fName, String lName) {
+
+        AppUser appUser = appUserRepo.findByFirstnameAndLastname(fName, lName)
+                .orElseThrow(() -> new RuntimeException("No User found named " + fName + " " + lName));
+        Project project = projectRepo.findById((long) projectId)
+                .orElseThrow(() -> new RuntimeException("No Project found With Id " + projectId));
+        appUser.getScrumProjects().add(project);
+        appUserRepo.save(appUser);
+    }
 }
