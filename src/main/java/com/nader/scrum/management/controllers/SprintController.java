@@ -5,6 +5,8 @@ import com.nader.scrum.management.entities.Sprint;
 import com.nader.scrum.management.services.ICrud;
 import com.nader.scrum.management.services.ISprintServcie;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -17,8 +19,9 @@ public class SprintController {
     private final ISprintServcie iSprintServcie;
 
     @PostMapping("addSprintAndAssignToProject")
-    public void addSprintAndAssignToProject(@RequestBody Sprint sprint, @RequestParam int idProject){
+    public ResponseEntity<String> addSprintAndAssignToProject(@RequestBody Sprint sprint, @RequestParam int idProject){
         iSprintServcie.addSprintAndAssignToProject(sprint,idProject);
+        return ResponseEntity.status(HttpStatus.CREATED).body("Created");
     }
     //TODO CRUD
 }

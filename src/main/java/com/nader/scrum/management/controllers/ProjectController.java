@@ -5,6 +5,8 @@ import com.nader.scrum.management.entities.Project;
 import com.nader.scrum.management.services.ICrud;
 import com.nader.scrum.management.services.IProjectService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -17,32 +19,33 @@ public class ProjectController {
 
 
     @PostMapping("addProject")
-    public Project addProject(@RequestBody Project project) {
-        return projectICrud.create(project);
+    public ResponseEntity<Project> addProject(@RequestBody Project project) {
+        return ResponseEntity.accepted().body(projectICrud.create(project));
     }
 
     @GetMapping("getProject")
-    public Project getProject(@RequestParam Long id) {
-        return projectICrud.get(id);
+    public ResponseEntity<Project> getProject(@RequestParam Long id) {
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body( projectICrud.get(id));
     }
 
     @PutMapping("updateProject")
-    public Project updateProject(@RequestBody Project project) {
-        return projectICrud.update(project);
+    public ResponseEntity<Project> updateProject(@RequestBody Project project) {
+        return ResponseEntity.ok().body(projectICrud.update(project));
     }
 
     @DeleteMapping("deleteProject")
-    public void deleteProject(@RequestParam Long id) {
+    public ResponseEntity<String> deleteProject(@RequestParam Long id) {
         projectICrud.delete(id);
+        return  ResponseEntity.accepted().body("Deleted successfully");
     }
 
     @GetMapping("getAllProject")
-    public List<Project> getAllProjects() {
-        return iProjectService.getAllProjects();
+    public ResponseEntity<List<Project>> getAllProjects() {
+        return ResponseEntity.status(HttpStatus.FOUND).body(iProjectService.getAllProjects());
     }
 
     @GetMapping("getProjectsByScrumMaster")
-    public List<Project> getProjectsByScrumMaster(@RequestParam String fName, String lName) {
-        return iProjectService.getProjectsByScrumMaster(fName, lName);
+    public ResponseEntity<List<Project>> getProjectsByScrumMaster(@RequestParam String fName, String lName) {
+        return ResponseEntity.status(HttpStatus.FOUND).body(iProjectService.getProjectsByScrumMaster(fName, lName));
     }
 }
