@@ -1,5 +1,6 @@
 package com.nader.scrum.management.services;
 
+import com.nader.scrum.management.dto.AppUserDTO;
 import com.nader.scrum.management.entities.AppUser;
 import com.nader.scrum.management.entities.Project;
 import com.nader.scrum.management.entities.Role;
@@ -7,7 +8,6 @@ import com.nader.scrum.management.repositories.AppUserRepo;
 import com.nader.scrum.management.repositories.ProjectRepo;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 
 import java.util.Collections;

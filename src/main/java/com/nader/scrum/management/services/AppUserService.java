@@ -1,5 +1,7 @@
 package com.nader.scrum.management.services;
 
+import com.nader.scrum.management.dto.AppUserDTO;
+import com.nader.scrum.management.dto.AppUserDTOMapper;
 import com.nader.scrum.management.entities.AppUser;
 import com.nader.scrum.management.entities.Project;
 import com.nader.scrum.management.entities.Role;
@@ -9,6 +11,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -17,6 +20,7 @@ public class AppUserService implements IAppUserService, ICrud<AppUser> {
 
     private final AppUserRepo appUserRepo;
     private final ProjectRepo projectRepo;
+    private final AppUserDTOMapper appUserDTOMapper;
 
 
     @Override
@@ -47,8 +51,11 @@ public class AppUserService implements IAppUserService, ICrud<AppUser> {
 
 
     @Override
-    public List<AppUser> getAllUsers() {
-        return appUserRepo.findAll();
+    public List<AppUserDTO> getAllUsers() {
+        return appUserRepo.findAll()
+                .stream()
+                .map(appUserDTOMapper)
+                .collect(Collectors.toList());
     }
 
     @Override
