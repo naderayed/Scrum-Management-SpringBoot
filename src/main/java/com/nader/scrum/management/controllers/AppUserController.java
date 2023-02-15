@@ -1,5 +1,6 @@
 package com.nader.scrum.management.controllers;
 
+import com.nader.scrum.management.dto.AppUserDTO;
 import com.nader.scrum.management.entities.AppUser;
 import com.nader.scrum.management.services.IAppUserService;
 import com.nader.scrum.management.services.ICrud;
@@ -40,7 +41,7 @@ public class AppUserController {
     }
 
     @GetMapping("getAllUsers")
-    public ResponseEntity<List<AppUser>> getAllUsers() {
+    public ResponseEntity<List<AppUserDTO>> getAllUsers() {
         return ResponseEntity.ok().body(iAppUserService.getAllUsers());
     }
 

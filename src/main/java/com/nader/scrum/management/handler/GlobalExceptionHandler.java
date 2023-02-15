@@ -15,7 +15,7 @@ public class GlobalExceptionHandler {
 
 //Handler that Handel all Type of Exception but to be more precise we can create of every exception their own method
     @ExceptionHandler(Exception.class)
-    public ResponseEntity<?>exceptionHandler(Exception exception){
+    public ResponseEntity<String> exceptionHandler(Exception exception){
         return ResponseEntity.badRequest().body(exception.getMessage());
     }
 }
