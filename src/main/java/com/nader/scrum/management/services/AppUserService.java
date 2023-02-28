@@ -10,8 +10,10 @@ import com.nader.scrum.management.repositories.ProjectRepo;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.text.Format;
 import java.util.List;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 @Service
 @RequiredArgsConstructor
@@ -81,5 +83,16 @@ public class AppUserService implements IAppUserService, ICrud<AppUser> {
                 .orElseThrow(() -> new RuntimeException("No Project found With Id " + projectId));
         appUser.getScrumProjects().add(project);
         appUserRepo.save(appUser);
+    }
+
+    @Override
+    public AppUserDTO findUserByEmail(String email) {
+        AppUser appUser = appUserRepo.findAppUserByEmailUser(email)
+                .orElseThrow(() -> new RuntimeException("No User With Email : " + email));
+
+        return new AppUserDTO(appUser.getIdUser(),
+                appUser.getEmailUser(),
+                appUser.getFirstname(),
+                appUser.getRole());
     }
 }

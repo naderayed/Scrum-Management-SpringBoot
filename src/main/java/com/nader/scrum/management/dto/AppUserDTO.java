@@ -11,3 +11,4 @@ public record AppUserDTO(
         Role role
 ) {
 }
+

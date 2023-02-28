@@ -9,5 +9,8 @@ public interface IAppUserService {
     List<AppUserDTO> getAllUsers();
 
     void assignProjectToDeveloper(int projectId, int devId);
-     void assignProjectToScrumMaster(int projectId, String fName, String lName);
+
+    void assignProjectToScrumMaster(int projectId, String fName, String lName);
+
+    AppUserDTO findUserByEmail(String email);
 }

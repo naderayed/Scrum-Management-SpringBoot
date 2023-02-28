@@ -56,4 +56,9 @@ public class AppUserController {
         iAppUserService.assignProjectToScrumMaster(projectId, fName, lName);
        return ResponseEntity.accepted().body("Updated successfully");
     }
+
+    @GetMapping("findUserByEmail")
+    public AppUserDTO findUserByEmail(@RequestParam String email){
+        return iAppUserService.findUserByEmail(email);
+    }
 }
