@@ -1,9 +1,6 @@
 package com.nader.scrum.management.entities;
 
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
-import lombok.ToString;
+import lombok.*;
 
 import javax.persistence.*;
 import java.util.List;
@@ -11,6 +8,7 @@ import java.util.List;
 @Getter
 @Setter
 @NoArgsConstructor
+@AllArgsConstructor
 @ToString
 @Entity
 public class AppUser{
@@ -30,7 +28,7 @@ public class AppUser{
     private Role role;
 
     @ManyToMany(fetch = FetchType.EAGER)
-    private List<Project> developersProjects;
+     List<Project> developersProjects;
     @OneToMany
     List<Project> scrumProjects;
 
