@@ -12,6 +12,7 @@ import org.springframework.stereotype.Service;
 import org.webjars.NotFoundException;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -48,7 +49,10 @@ public class AppUserService implements IAppUserService, ICrud<AppUser> {
 
     @Override
     public void delete(Long id) {
-        appUserRepo.deleteById(id);
+        Optional<AppUser> appUser = appUserRepo.findById(id);
+        appUser.ifPresent(appUserRepo::delete);
+
+        throw new NotFoundException("No User With ID "+id);
     }
 
 

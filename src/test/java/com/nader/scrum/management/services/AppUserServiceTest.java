@@ -39,6 +39,7 @@ class AppUserServiceTest {
     void setUp() {
         //   autoCloseable = MockitoAnnotations.openMocks(this);
         underTest = new AppUserService(appUserRepo, projectRepo, appUserDTOMapper);
+
     }
 
 //    @AfterEach
@@ -104,14 +105,30 @@ class AppUserServiceTest {
         //when
         //then
 
-            assertThatThrownBy(() -> underTest.create(appUser))
-                    .isInstanceOf(NotFoundException.class)
-                    .hasMessageContaining("Email is taken, try another Email!");
+        assertThatThrownBy(() -> underTest.create(appUser))
+                .isInstanceOf(NotFoundException.class)
+                .hasMessageContaining("Email is taken, try another Email!");
     }
 
     @Test
-    @Disabled
-    void delete() {
+    void itShouldThrowsWhenDeleteAppUserNoFound() {
+        //given
+        AppUser appUser = new AppUser(
+                (long) 100,
+                "email@email.com",
+                "1234",
+                "user100",
+                "last100",
+                Role.DEVELOPER,
+                new ArrayList<>(),
+                new ArrayList<>()
+        );
+
+        //when
+        //then
+        assertThatThrownBy(() -> underTest.delete(appUser.getIdUser()))
+                .hasMessageContaining("No User With ID "+appUser.getIdUser())
+                .isInstanceOf(NotFoundException.class);
     }
 
 }
