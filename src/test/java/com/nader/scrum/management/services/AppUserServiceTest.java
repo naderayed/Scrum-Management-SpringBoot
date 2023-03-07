@@ -6,7 +6,6 @@ import com.nader.scrum.management.entities.Role;
 import com.nader.scrum.management.repositories.AppUserRepo;
 import com.nader.scrum.management.repositories.ProjectRepo;
 import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.ArgumentCaptor;
@@ -56,10 +55,6 @@ class AppUserServiceTest {
         verify(appUserRepo).findAll();
     }
 
-    @Test
-    @Disabled
-    void update() {
-    }
 
     @Test
     void canAddAppUser() {
@@ -85,6 +80,36 @@ class AppUserServiceTest {
         verify(appUserRepo).save(appUserArgumentCaptor.capture());
         AppUser captorUser = appUserArgumentCaptor.getValue();
         assertThat(captorUser).isEqualTo(appUser);
+    }
+
+    @Test
+    void itSouldUpdateAppUser() {
+        //given
+        AppUser appUser = new AppUser(
+                (long) 100,
+                "email@email.com",
+                "1234",
+                "user100",
+                "last100",
+                Role.DEVELOPER,
+                new ArrayList<>(),
+                new ArrayList<>()
+        );
+        AppUser toUpdateUser = new AppUser(
+                (long) 100,
+                "emai99l@email.com",
+                "1234",
+                "user99",
+                "last99",
+                Role.DEVELOPER,
+                new ArrayList<>(),
+                new ArrayList<>()
+        );
+        underTest.update(toUpdateUser);
+        //when
+
+        verify(appUserRepo).save(toUpdateUser);
+        //then
     }
 
     @Test
@@ -127,8 +152,9 @@ class AppUserServiceTest {
         //when
         //then
         assertThatThrownBy(() -> underTest.delete(appUser.getIdUser()))
-                .hasMessageContaining("No User With ID "+appUser.getIdUser())
+                .hasMessageContaining("No User With ID " + appUser.getIdUser())
                 .isInstanceOf(NotFoundException.class);
     }
+
 
 }
