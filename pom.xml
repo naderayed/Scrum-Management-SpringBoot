@@ -55,6 +55,12 @@
             <artifactId>h2</artifactId>
             <scope>test</scope>
         </dependency>
+<!-- We have to add spring boot starter mail in order to integrate mailing service-->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-mail</artifactId>
+        </dependency>
+
 
         <dependency>
             <groupId>org.springdoc</groupId>

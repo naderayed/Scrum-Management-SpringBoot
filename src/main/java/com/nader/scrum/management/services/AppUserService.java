@@ -7,7 +7,6 @@ import com.nader.scrum.management.entities.Project;
 import com.nader.scrum.management.entities.Role;
 import com.nader.scrum.management.repositories.AppUserRepo;
 import com.nader.scrum.management.repositories.ProjectRepo;
-import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.webjars.NotFoundException;
 
@@ -16,13 +15,19 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
-@RequiredArgsConstructor
+
 //DI with Lombok features
 public class AppUserService implements IAppUserService, ICrud<AppUser> {
 
     private final AppUserRepo appUserRepo;
     private final ProjectRepo projectRepo;
     private final AppUserDTOMapper appUserDTOMapper;
+
+    public AppUserService(AppUserRepo appUserRepo, ProjectRepo projectRepo, AppUserDTOMapper appUserDTOMapper) {
+        this.appUserRepo = appUserRepo;
+        this.projectRepo = projectRepo;
+        this.appUserDTOMapper = appUserDTOMapper;
+    }
 
 
     @Override
