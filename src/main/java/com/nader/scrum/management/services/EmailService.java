@@ -1,10 +1,7 @@
-package com.nader.scrum.management.services;// Java Program to Illustrate Creation Of
-// Service implementation class
-
-
-// Importing required classes
+package com.nader.scrum.management.services;
 
 import com.nader.scrum.management.entities.EmailDetails;
+import com.nader.scrum.management.services.interfaces.IEmailService;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.io.FileSystemResource;
 import org.springframework.mail.SimpleMailMessage;
@@ -16,7 +13,7 @@ import javax.mail.MessagingException;
 import javax.mail.internet.MimeMessage;
 import java.io.File;
 
-// Annotation
+
 @Service
 public class EmailService implements IEmailService {
 
@@ -29,47 +26,41 @@ public class EmailService implements IEmailService {
         this.javaMailSender = javaMailSender;
     }
 
-    // Method 1
-    // To send a simple email
+
     public String sendSimpleMail(EmailDetails details) {
 
-        // Try block to check for exceptions
+
         try {
 
-            // Creating a simple mail message
+
             SimpleMailMessage mailMessage
                     = new SimpleMailMessage();
 
-            // Setting up necessary details
+
             mailMessage.setFrom(sender);
             mailMessage.setTo(details.getRecipient());
             mailMessage.setText(details.getMsgBody());
             mailMessage.setSubject(details.getSubject());
 
-            // Sending the mail
+
             javaMailSender.send(mailMessage);
             return "Mail Sent Successfully...";
-        }
-
-        // Catch block to handle the exceptions
-        catch (Exception e) {
+        } catch (Exception e) {
             return "Error while Sending Mail";
         }
     }
 
-    // Method 2
-    // To send an email with attachment
+
     public String
     sendMailWithAttachment(EmailDetails details) {
-        // Creating a mime message
+
         MimeMessage mimeMessage
                 = javaMailSender.createMimeMessage();
         MimeMessageHelper mimeMessageHelper;
 
         try {
 
-            // Setting multipart as true for attachments to
-            // be send
+
             mimeMessageHelper
                     = new MimeMessageHelper(mimeMessage, true);
             mimeMessageHelper.setFrom(sender);
@@ -78,7 +69,7 @@ public class EmailService implements IEmailService {
             mimeMessageHelper.setSubject(
                     details.getSubject());
 
-            // Adding the attachment
+
             FileSystemResource file
                     = new FileSystemResource(
                     new File(details.getAttachment()));
@@ -86,15 +77,12 @@ public class EmailService implements IEmailService {
             mimeMessageHelper.addAttachment(
                     file.getFilename(), file);
 
-            // Sending the mail
+
             javaMailSender.send(mimeMessage);
             return "Mail sent Successfully";
-        }
+        } catch (MessagingException e) {
 
-        // Catch block to handle MessagingException
-        catch (MessagingException e) {
 
-            // Display message when exception occurred
             return "Error while sending mail!!!";
         }
     }

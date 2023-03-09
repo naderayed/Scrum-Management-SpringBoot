@@ -7,6 +7,8 @@ import com.nader.scrum.management.entities.Project;
 import com.nader.scrum.management.entities.Role;
 import com.nader.scrum.management.repositories.AppUserRepo;
 import com.nader.scrum.management.repositories.ProjectRepo;
+import com.nader.scrum.management.services.interfaces.IAppUserService;
+import com.nader.scrum.management.services.interfaces.ICrud;
 import org.springframework.stereotype.Service;
 import org.webjars.NotFoundException;
 

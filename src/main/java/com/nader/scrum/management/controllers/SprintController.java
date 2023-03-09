@@ -2,8 +2,8 @@ package com.nader.scrum.management.controllers;
 
 
 import com.nader.scrum.management.entities.Sprint;
-import com.nader.scrum.management.services.ICrud;
-import com.nader.scrum.management.services.ISprintServcie;
+import com.nader.scrum.management.services.interfaces.ICrud;
+import com.nader.scrum.management.services.interfaces.ISprintServcie;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

@@ -1,4 +1,4 @@
-package com.nader.scrum.management.services;
+package com.nader.scrum.management.services.interfaces;
 
 import com.nader.scrum.management.entities.Project;
 
