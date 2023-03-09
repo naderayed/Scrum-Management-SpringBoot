@@ -9,6 +9,7 @@ import java.util.List;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
+@Builder
 @ToString
 @Entity
 public class AppUser{
