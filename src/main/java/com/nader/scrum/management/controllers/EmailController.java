@@ -3,7 +3,7 @@ package com.nader.scrum.management.controllers;
 
 
 import com.nader.scrum.management.entities.EmailDetails;
-import com.nader.scrum.management.services.IEmailService;
+import com.nader.scrum.management.services.interfaces.IEmailService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;

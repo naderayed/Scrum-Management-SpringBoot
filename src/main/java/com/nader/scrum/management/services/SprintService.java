@@ -5,12 +5,14 @@ import com.nader.scrum.management.entities.Project;
 import com.nader.scrum.management.entities.Sprint;
 import com.nader.scrum.management.repositories.ProjectRepo;
 import com.nader.scrum.management.repositories.SprintRepo;
+import com.nader.scrum.management.services.interfaces.ICrud;
+import com.nader.scrum.management.services.interfaces.ISprintServcie;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 @Service
 @RequiredArgsConstructor
-public class SprintService implements ISprintServcie,ICrud<Sprint> {
+public class SprintService implements ISprintServcie, ICrud<Sprint> {
 
     private final SprintRepo sprintRepo;
     private final ProjectRepo projectRepo;

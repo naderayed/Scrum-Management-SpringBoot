@@ -1,11 +1,12 @@
 package com.nader.scrum.management.services;
 
-import com.nader.scrum.management.dto.AppUserDTO;
 import com.nader.scrum.management.entities.AppUser;
 import com.nader.scrum.management.entities.Project;
 import com.nader.scrum.management.entities.Role;
 import com.nader.scrum.management.repositories.AppUserRepo;
 import com.nader.scrum.management.repositories.ProjectRepo;
+import com.nader.scrum.management.services.interfaces.ICrud;
+import com.nader.scrum.management.services.interfaces.IProjectService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;

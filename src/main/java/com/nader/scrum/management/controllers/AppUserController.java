@@ -2,8 +2,8 @@ package com.nader.scrum.management.controllers;
 
 import com.nader.scrum.management.dto.AppUserDTO;
 import com.nader.scrum.management.entities.AppUser;
-import com.nader.scrum.management.services.IAppUserService;
-import com.nader.scrum.management.services.ICrud;
+import com.nader.scrum.management.services.interfaces.IAppUserService;
+import com.nader.scrum.management.services.interfaces.ICrud;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
