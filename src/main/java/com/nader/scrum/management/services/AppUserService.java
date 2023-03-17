@@ -24,19 +24,29 @@ public class AppUserService implements IAppUserService, ICrud<AppUser> {
     private final AppUserRepo appUserRepo;
     private final ProjectRepo projectRepo;
     private final AppUserDTOMapper appUserDTOMapper;
+    //  private final IEmailService iEmailService;
 
     public AppUserService(AppUserRepo appUserRepo, ProjectRepo projectRepo, AppUserDTOMapper appUserDTOMapper) {
         this.appUserRepo = appUserRepo;
         this.projectRepo = projectRepo;
         this.appUserDTOMapper = appUserDTOMapper;
+        //  this.iEmailService = iEmailService;
     }
 
 
     @Override
     public AppUser create(AppUser appUser) {
         Boolean found = appUserRepo.selectExistsEmail(appUser.getEmailUser());
-        if (Boolean.FALSE.equals(found))
+        if (Boolean.FALSE.equals(found)) {
+//            EmailDetails emailDetails = EmailDetails.builder()
+//                    .msgBody("Welcome To Scrum Management your role is "+appUser.getRole().toString()+".")
+//                    .subject("WELCOME")
+//                  .recipient(appUser.getEmailUser()).build();
+//            iEmailService.sendSimpleMail(emailDetails);
             return appUserRepo.save(appUser);
+
+        }
+
         throw new NotFoundException("Email is taken, try another Email!");
     }
 
@@ -59,7 +69,7 @@ public class AppUserService implements IAppUserService, ICrud<AppUser> {
         Optional<AppUser> appUser = appUserRepo.findById(id);
         appUser.ifPresent(appUserRepo::delete);
 
-        throw new NotFoundException("No User With ID "+id);
+        throw new NotFoundException("No User With ID " + id);
     }
 
 

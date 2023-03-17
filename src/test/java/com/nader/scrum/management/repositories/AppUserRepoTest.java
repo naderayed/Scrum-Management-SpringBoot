@@ -60,8 +60,6 @@ class AppUserRepoTest {
     @Test
     void itShouldCheckWhenUserByEmailDoesNotExist() {
 
-
-
         //Arrange
         AppUser appUser = new AppUser(
                 (long) 100,

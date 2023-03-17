@@ -13,6 +13,7 @@ import java.util.List;
 @ToString
 @Entity
 @AllArgsConstructor
+@Builder
 public class Project {
     /*note that mappedBy is always used in bidirectional relation,
     in the case of OneToMany or ManyToOne we mapped
@@ -25,7 +26,6 @@ public class Project {
     private Long idProject;
     private String titleProject;
     private String projectDescription;
-
     @ManyToMany(mappedBy = "developersProjects")
     @JsonIgnore
     private List<AppUser> appUsers;
