@@ -1,25 +1,25 @@
 package com.nader.scrum.management.services;
 
+import com.nader.scrum.management.dto.ProjectDTO;
+import com.nader.scrum.management.dto.mappers.ProjectDTOMapper;
 import com.nader.scrum.management.entities.Project;
 import com.nader.scrum.management.repositories.AppUserRepo;
 import com.nader.scrum.management.repositories.ProjectRepo;
-import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
-import org.mockito.ArgumentCaptor;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.mockito.MockitoAnnotations;
+import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
-import org.springframework.boot.jdbc.EmbeddedDatabaseConnection;
-import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
 
 import java.util.ArrayList;
+import java.util.List;
+import java.util.Optional;
 
-import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
-import static org.mockito.Mockito.verify;
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
 
@@ -31,9 +31,12 @@ class ProjectServiceTest {
     private ProjectRepo projectRepo;
     @Mock
     private AppUserRepo appUserRepo;
+
+    @Mock
+    private ProjectDTOMapper projectDTOMapper;
     //TODelete if we are using ExtendsWith
     //private AutoCloseable autoCloseable;
-  @InjectMocks
+    @InjectMocks
     private ProjectService underTest;
 
     @BeforeEach
@@ -46,7 +49,7 @@ class ProjectServiceTest {
                 new ArrayList<>());
         underTest.create(project);
         //TODelete if we are using ExtendsWith
-       // autoCloseable = MockitoAnnotations.openMocks(this);
+        // autoCloseable = MockitoAnnotations.openMocks(this);
     }
 
     //TODelete if we are using ExtendsWith
@@ -60,39 +63,50 @@ class ProjectServiceTest {
     @Test
     void canAddNewProject() {
         //Arrange
-        Project project = new Project(
+        Project testProject = new Project(
                 1L,
                 "proTitle",
                 "description",
                 new ArrayList<>(),
                 new ArrayList<>());
         //Act
-        underTest.create(project);
-        ArgumentCaptor<Project> projectArgumentCaptor = ArgumentCaptor.forClass(Project.class);
-        verify(projectRepo).save(projectArgumentCaptor.capture());
-        Project value = projectArgumentCaptor.getValue();
-        //then
-        assertThat(value).isEqualTo(project);
-
+        when(projectRepo.save(Mockito.any(Project.class))).thenReturn(testProject);
+        Project resultProject = underTest.create(testProject);
+        //assert
+        assertThat(resultProject).isEqualTo(testProject);
 
     }
 
     @Test
     void itShouldReturnsAllProjects() {
-        //when
-        underTest.getAllProjects();
-        //then
-        verify(projectRepo).findAll();
+        //Arrange
+
+        Project project = Mockito.mock(Project.class);
+        Project project1 = Mockito.mock(Project.class);
+        when(projectRepo.findAll()).thenReturn(List.of(project, project1));
+        //Act
+        List<ProjectDTO> allProjects = underTest.getAllProjects();
+        //Assert
+        assertThat(allProjects).isNotNull()
+                .hasSize(2);
     }
 
+
     @Test
-    void itShouldReturnsProjectById() {
-        //given
-        Long projectID = 0L;
-        //when
-        underTest.get(projectID);
-        //then
-        verify(projectRepo).findById(projectID);
+    void itShouldReturnsProjectMatchingId() {
+
+        //Arrange
+        Project testProject = new Project(
+                1L,
+                "proTitle",
+                "description",
+                new ArrayList<>(),
+                new ArrayList<>());
+        when(projectRepo.findById(1L)).thenReturn(Optional.of(testProject));
+        //Act
+        Project result = underTest.get(1L);
+        //Assert
+        assertThat(result).isNotNull().isEqualTo(testProject);
     }
 
     @Test

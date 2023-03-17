@@ -2,9 +2,11 @@ package com.nader.scrum.management.dto.mappers;
 
 import com.nader.scrum.management.dto.SprintDTO;
 import com.nader.scrum.management.entities.Sprint;
+import org.springframework.stereotype.Component;
 
 import java.util.function.Function;
 
+@Component
 public class SprintMapper implements Function<Sprint, SprintDTO> {
     @Override
     public SprintDTO apply(Sprint sprint) {

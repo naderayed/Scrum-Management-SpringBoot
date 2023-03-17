@@ -1,5 +1,6 @@
 package com.nader.scrum.management.services;
 
+import com.nader.scrum.management.dto.AppUserDTO;
 import com.nader.scrum.management.dto.mappers.AppUserDTOMapper;
 import com.nader.scrum.management.entities.AppUser;
 import com.nader.scrum.management.entities.Role;
@@ -10,15 +11,18 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.ArgumentCaptor;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
+import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.webjars.NotFoundException;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThatThrownBy;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
 class AppUserServiceTest {
@@ -157,5 +161,16 @@ class AppUserServiceTest {
                 .isInstanceOf(NotFoundException.class);
     }
 
+    @Test
+    void canReturnAllAppUser() {
+        //Arrange
+        AppUser appUserMock = Mockito.mock(AppUser.class);
+        when(appUserRepo.findAll()).thenReturn(List.of(appUserMock, appUserMock));
+        //Act
+        List<AppUserDTO> allUsers = underTest.getAllUsers();
+        //Assert
+        assertThat(allUsers).isNotNull();
+
+    }
 
 }

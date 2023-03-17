@@ -19,13 +19,20 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @Service
-@RequiredArgsConstructor
+
 @Slf4j
 public class ProjectService implements IProjectService, ICrud<Project> {
 
     private final ProjectRepo projectRepo;
     private final AppUserRepo appUserRepo;
+
     private final ProjectDTOMapper projectDTOMapper;
+
+    public ProjectService(ProjectRepo projectRepo, AppUserRepo appUserRepo, ProjectDTOMapper projectDTOMapper) {
+        this.projectRepo = projectRepo;
+        this.appUserRepo = appUserRepo;
+        this.projectDTOMapper = projectDTOMapper;
+    }
 
     @Override
     public Project create(Project project) {
@@ -43,7 +50,7 @@ public class ProjectService implements IProjectService, ICrud<Project> {
     @Override
     public Project update(Project project) {
         if (project != null)
-            return projectRepo.save(project);
+            return this.create(project);
         return null;
     }
 
