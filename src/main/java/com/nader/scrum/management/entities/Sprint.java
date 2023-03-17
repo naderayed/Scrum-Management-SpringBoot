@@ -1,10 +1,7 @@
 package com.nader.scrum.management.entities;
 
 
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
-import lombok.ToString;
+import lombok.*;
 
 import javax.persistence.*;
 import java.util.Date;
@@ -14,6 +11,7 @@ import java.util.Date;
 @NoArgsConstructor
 @ToString
 @Entity
+
 public class Sprint {
     /*note that mappedBy is always used in bidirectional relation,
     in the case of OneToMany or ManyToOne we mapped
