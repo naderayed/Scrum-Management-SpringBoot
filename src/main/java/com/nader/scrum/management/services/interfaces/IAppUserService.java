@@ -6,6 +6,7 @@ import java.util.List;
 
 public interface IAppUserService {
 
+    public AppUserDTO getAppUser(Long id);
     List<AppUserDTO> getAllUsers();
 
     void assignProjectToDeveloper(int projectId, int devId);

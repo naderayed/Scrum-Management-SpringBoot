@@ -1,7 +1,7 @@
 package com.nader.scrum.management.services;
 
 import com.nader.scrum.management.dto.AppUserDTO;
-import com.nader.scrum.management.dto.AppUserDTOMapper;
+import com.nader.scrum.management.dto.mappers.AppUserDTOMapper;
 import com.nader.scrum.management.entities.AppUser;
 import com.nader.scrum.management.entities.Project;
 import com.nader.scrum.management.entities.Role;
@@ -52,8 +52,19 @@ public class AppUserService implements IAppUserService, ICrud<AppUser> {
 
     @Override
     public AppUser get(Long id) {
-        return appUserRepo.findById(id)
+        return null;
+    }
+
+
+    public AppUserDTO getAppUser(Long id) {
+        AppUser appUser = appUserRepo.findById(id)
                 .orElseThrow(() -> new NotFoundException("No User With ID :" + id));
+        return AppUserDTO.builder()
+                .idUser(appUser.getIdUser())
+                .emailUser(appUser.getEmailUser())
+                .firstname(appUser.getFirstname())
+                .role(appUser.getRole())
+                .build();
 
     }
 

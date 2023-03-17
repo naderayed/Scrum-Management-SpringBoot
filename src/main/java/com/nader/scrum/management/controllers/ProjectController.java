@@ -1,6 +1,7 @@
 package com.nader.scrum.management.controllers;
 
 
+import com.nader.scrum.management.dto.ProjectDTO;
 import com.nader.scrum.management.entities.Project;
 import com.nader.scrum.management.services.interfaces.ICrud;
 import com.nader.scrum.management.services.interfaces.IProjectService;
@@ -40,12 +41,16 @@ public class ProjectController {
     }
 
     @GetMapping("getAllProject")
-    public ResponseEntity<List<Project>> getAllProjects() {
-        return ResponseEntity.status(HttpStatus.FOUND).body(iProjectService.getAllProjects());
+    public ResponseEntity<List<ProjectDTO>> getAllProjects() {
+        return ResponseEntity.
+                status(HttpStatus.FOUND)
+                .body(iProjectService.getAllProjects());
     }
 
     @GetMapping("getProjectsByScrumMaster")
-    public ResponseEntity<List<Project>> getProjectsByScrumMaster(@RequestParam String fName, String lName) {
-        return ResponseEntity.status(HttpStatus.FOUND).body(iProjectService.getProjectsByScrumMaster(fName, lName));
+    public ResponseEntity<List<ProjectDTO>> getProjectsByScrumMaster(@RequestParam String fName, String lName) {
+        return ResponseEntity
+                .status(HttpStatus.FOUND)
+                .body(iProjectService.getProjectsByScrumMaster(fName, lName));
     }
 }

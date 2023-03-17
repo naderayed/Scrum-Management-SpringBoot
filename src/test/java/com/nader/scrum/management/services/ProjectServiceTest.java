@@ -9,6 +9,7 @@ import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.ArgumentCaptor;
+import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import org.mockito.junit.jupiter.MockitoExtension;
@@ -21,7 +22,7 @@ import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 import static org.mockito.Mockito.verify;
 
 @ExtendWith(MockitoExtension.class)
-@AutoConfigureTestDatabase(connection = EmbeddedDatabaseConnection.H2)
+
 //ExtendsWith annotation replace all creation and closing of Mockito
 class ProjectServiceTest {
 
@@ -31,7 +32,8 @@ class ProjectServiceTest {
     @Mock
     private AppUserRepo appUserRepo;
     //TODelete if we are using ExtendsWith
-    private AutoCloseable autoCloseable;
+    //private AutoCloseable autoCloseable;
+  @InjectMocks
     private ProjectService underTest;
 
     @BeforeEach
@@ -44,28 +46,27 @@ class ProjectServiceTest {
                 new ArrayList<>());
         underTest.create(project);
         //TODelete if we are using ExtendsWith
-        autoCloseable = MockitoAnnotations.openMocks(this);
-        underTest = new ProjectService(projectRepo, appUserRepo);
+       // autoCloseable = MockitoAnnotations.openMocks(this);
     }
 
     //TODelete if we are using ExtendsWith
-    @AfterEach
-    void tearDown() throws Exception {
-        autoCloseable.close();
-
-    }
+//    @AfterEach
+//    void tearDown() throws Exception {
+//        autoCloseable.close();
+//
+//    }
 
 
     @Test
     void canAddNewProject() {
-        //given
+        //Arrange
         Project project = new Project(
                 1L,
                 "proTitle",
                 "description",
                 new ArrayList<>(),
                 new ArrayList<>());
-        //when
+        //Act
         underTest.create(project);
         ArgumentCaptor<Project> projectArgumentCaptor = ArgumentCaptor.forClass(Project.class);
         verify(projectRepo).save(projectArgumentCaptor.capture());

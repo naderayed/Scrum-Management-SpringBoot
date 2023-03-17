@@ -23,8 +23,8 @@ public class Sprint {
     private String descriptionSprint;
     @Temporal(TemporalType.DATE)
     private Date startDate;
-
-
+    @Temporal(TemporalType.DATE)
+    private Date endDate;
     @ManyToOne()
     private Project project;
 }

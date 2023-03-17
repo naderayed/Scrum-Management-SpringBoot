@@ -1,18 +1,16 @@
 package com.nader.scrum.management.services;
 
-import com.nader.scrum.management.dto.AppUserDTOMapper;
+import com.nader.scrum.management.dto.mappers.AppUserDTOMapper;
 import com.nader.scrum.management.entities.AppUser;
 import com.nader.scrum.management.entities.Role;
 import com.nader.scrum.management.repositories.AppUserRepo;
 import com.nader.scrum.management.repositories.ProjectRepo;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.ArgumentCaptor;
+import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
-import org.springframework.boot.jdbc.EmbeddedDatabaseConnection;
-import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
 import org.webjars.NotFoundException;
 
 import java.util.ArrayList;
@@ -23,7 +21,6 @@ import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.verify;
 
 @ExtendWith(MockitoExtension.class)
-@AutoConfigureTestDatabase(connection = EmbeddedDatabaseConnection.H2)
 class AppUserServiceTest {
 
 
@@ -35,14 +32,15 @@ class AppUserServiceTest {
     @Mock
     private AppUserDTOMapper appUserDTOMapper;
 
+    @InjectMocks
     private AppUserService underTest;
 
-    @BeforeEach
-    void setUp() {
-        //   autoCloseable = MockitoAnnotations.openMocks(this);
-        underTest = new AppUserService(appUserRepo, projectRepo, appUserDTOMapper);
-
-    }
+//    @BeforeEach
+//    void setUp() {
+//        //   autoCloseable = MockitoAnnotations.openMocks(this);
+//        underTest = new AppUserService(appUserRepo, projectRepo, appUserDTOMapper);
+//
+//    }
 
 //    @AfterEach
 //    void tearDown() throws Exception {

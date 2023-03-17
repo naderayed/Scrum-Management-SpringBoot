@@ -1,5 +1,7 @@
 package com.nader.scrum.management.services;
 
+import com.nader.scrum.management.dto.ProjectDTO;
+import com.nader.scrum.management.dto.mappers.ProjectDTOMapper;
 import com.nader.scrum.management.entities.AppUser;
 import com.nader.scrum.management.entities.Project;
 import com.nader.scrum.management.entities.Role;
@@ -14,6 +16,7 @@ import org.springframework.stereotype.Service;
 import java.util.Collections;
 import java.util.Date;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -22,6 +25,7 @@ public class ProjectService implements IProjectService, ICrud<Project> {
 
     private final ProjectRepo projectRepo;
     private final AppUserRepo appUserRepo;
+    private final ProjectDTOMapper projectDTOMapper;
 
     @Override
     public Project create(Project project) {
@@ -49,23 +53,27 @@ public class ProjectService implements IProjectService, ICrud<Project> {
     }
 
     @Override
-    public List<Project> getAllProjects() {
-        return projectRepo.findAll();
+    public List<ProjectDTO> getAllProjects() {
+        List<Project> projects = projectRepo.findAll();
+     return  projects.stream()
+             .map(projectDTOMapper).collect(Collectors.toList());
     }
 
     @Override
-    public List<Project> getProjectsByScrumMaster(String fName, String lName) {
+    public List<ProjectDTO> getProjectsByScrumMaster(String fName, String lName) {
         AppUser appUser = appUserRepo.findByFirstnameAndLastname(fName, lName)
                 .orElseThrow(() -> new RuntimeException("No User found named " + fName + " " + lName));
         if (appUser.getRole() == Role.SCRUM_MASTER)
-            return appUser.getScrumProjects();
+            return appUser.getScrumProjects()
+                    .stream().map(projectDTOMapper)
+                    .collect(Collectors.toList());
         return Collections.emptyList();
     }
 
     //TODO uncomment
    // @Scheduled(fixedRate =100000)
     public void getProjectsCurrentSprints() {
-        List<Project> allProjects = this.getAllProjects();
+        List<Project> allProjects = projectRepo.findAll();
         allProjects.forEach(project -> project.getSprints().forEach(sprint -> {
             if (sprint.getStartDate().before(new Date()))
                 log.info(project.toString());

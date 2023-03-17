@@ -1,13 +1,15 @@
 package com.nader.scrum.management.services.interfaces;
 
+import com.nader.scrum.management.dto.ProjectDTO;
+import com.nader.scrum.management.dto.mappers.ProjectDTOMapper;
 import com.nader.scrum.management.entities.Project;
 
 import java.util.List;
 
 public interface IProjectService {
 
-    List<Project> getAllProjects();
+    List<ProjectDTO> getAllProjects();
 
-    List<Project> getProjectsByScrumMaster(String fName, String lName);
+    List<ProjectDTO> getProjectsByScrumMaster(String fName, String lName);
 
 }

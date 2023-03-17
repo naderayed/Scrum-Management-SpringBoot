@@ -30,8 +30,8 @@ public class AppUserController {
     }
 
     @GetMapping("getUser")
-    public ResponseEntity<AppUser> getUser(@RequestParam Long id) {
-       return ResponseEntity.status(HttpStatus.OK).body(userICrud.get(id));
+    public ResponseEntity<AppUserDTO> getUser(@RequestParam Long id) {
+       return ResponseEntity.status(HttpStatus.OK).body(iAppUserService.getAppUser(id));
     }
 
     @DeleteMapping("deleteUser")
