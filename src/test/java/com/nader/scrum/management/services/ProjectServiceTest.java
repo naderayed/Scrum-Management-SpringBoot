@@ -19,7 +19,7 @@ import java.util.List;
 import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
 
@@ -61,7 +61,7 @@ class ProjectServiceTest {
 
 
     @Test
-    void canAddNewProject() {
+    void itShouldAddNewProject() {
         //Arrange
         Project testProject = new Project(
                 1L,
@@ -110,18 +110,44 @@ class ProjectServiceTest {
     }
 
     @Test
-    @Disabled
-    void update() {
+
+    void itShouldUpdateProject() {
+        //Arrange
+        Project testProject = new Project(
+                1L,
+                "proTitle",
+                "description",
+                new ArrayList<>(),
+                new ArrayList<>());
+        Project updatedProject = new Project(
+                1L,
+                "updated Project",
+                "description",
+                new ArrayList<>(),
+                new ArrayList<>());
+        when(projectRepo.save(Mockito.any(Project.class))).thenReturn(updatedProject);
+        projectRepo.save(testProject);
+        //Act
+        Project update = underTest.update(updatedProject);
+        //Assert
+        assertThat(updatedProject).isNotNull();
+        assertThat(update.getTitleProject()).isEqualTo(updatedProject.getTitleProject());
     }
 
     @Test
-    @Disabled
-    void delete() {
-    }
-
-    @Test
-    @Disabled
-    void getAllProjects() {
+    void itShouldDeleteProject() {
+        // Arrange
+        Project project = Project.builder()
+                .idProject(1L)
+                .sprints(new ArrayList<>())
+                .titleProject("title")
+                .projectDescription("desc")
+                .appUsers(new ArrayList<>())
+                .build();
+        // Act
+        underTest.delete(1L);
+        // Assert
+        verify(projectRepo, times(1)).deleteById(1L);
     }
 
     @Test

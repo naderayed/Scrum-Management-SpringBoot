@@ -68,6 +68,7 @@ public class AppUserService implements IAppUserService, ICrud<AppUser> {
 
     }
 
+
     @Override
     public AppUser update(AppUser appUser) {
         if (appUser != null)
