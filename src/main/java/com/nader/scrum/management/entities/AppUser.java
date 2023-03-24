@@ -1,8 +1,14 @@
 package com.nader.scrum.management.entities;
 
 import lombok.*;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.crypto.password.PasswordEncoder;
 
 import javax.persistence.*;
+import java.util.Collection;
+import java.util.Collections;
 import java.util.List;
 
 @Getter
@@ -12,11 +18,7 @@ import java.util.List;
 @Builder
 @ToString
 @Entity
-public class AppUser{
-    /*note that mappedBy is always used in bidirectional relation,
-    in the case of OneToMany or ManyToOne we mapped
-    by the child, and for the ManyToMany Or OneToOne we check the logic or the description
-    * */
+public class AppUser implements UserDetails {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -28,9 +30,53 @@ public class AppUser{
     @Enumerated(EnumType.STRING)
     private Role role;
 
-    @ManyToMany(fetch = FetchType.EAGER)
-     List<Project> developersProjects;
-    @OneToMany
-    List<Project> scrumProjects;
 
+    @ManyToMany(fetch = FetchType.EAGER)
+    private List<Project> developersProjects;
+    @OneToMany
+    private List<Project> scrumProjects;
+
+
+    @Override
+    public Collection<? extends GrantedAuthority> getAuthorities() {
+        return Collections.singletonList(new SimpleGrantedAuthority(this.getRole().name()));
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
+    }
+
+    @Override
+    public String getPassword() {
+        return this.password;
+    }
+
+    @Override
+    public String getUsername() {
+        return this.firstname;
+    }
+
+    @Override
+    public boolean isAccountNonExpired() {
+
+        return true;
+    }
+
+    @Override
+    public boolean isAccountNonLocked() {
+
+        return true;
+    }
+
+    @Override
+    public boolean isCredentialsNonExpired() {
+
+        return true;
+    }
+
+    @Override
+    public boolean isEnabled() {
+
+        return true;
+    }
 }

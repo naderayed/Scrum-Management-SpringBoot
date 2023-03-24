@@ -70,7 +70,7 @@ public class ProjectService implements IProjectService, ICrud<Project> {
     public List<ProjectDTO> getProjectsByScrumMaster(String fName, String lName) {
         AppUser appUser = appUserRepo.findByFirstnameAndLastname(fName, lName)
                 .orElseThrow(() -> new RuntimeException("No User found named " + fName + " " + lName));
-        if (appUser.getRole() == Role.SCRUM_MASTER)
+        if (appUser.getRole() == Role.ROLE_MASTER)
             return appUser.getScrumProjects()
                     .stream().map(projectDTOMapper)
                     .collect(Collectors.toList());
