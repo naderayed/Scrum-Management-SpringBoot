@@ -1,6 +1,7 @@
 package com.nader.scrum.management.entities;
 
 public enum Role {
-    SCRUM_MASTER,
-    DEVELOPER
+    ROLE_MASTER,
+    ROLE_DEVELOPER,
+    ROLE_PRODUCTOWNER;
 }

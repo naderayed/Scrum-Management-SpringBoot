@@ -9,6 +9,7 @@ import com.nader.scrum.management.repositories.AppUserRepo;
 import com.nader.scrum.management.repositories.ProjectRepo;
 import com.nader.scrum.management.services.interfaces.IAppUserService;
 import com.nader.scrum.management.services.interfaces.ICrud;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.webjars.NotFoundException;
 
@@ -24,13 +25,15 @@ public class AppUserService implements IAppUserService, ICrud<AppUser> {
     private final AppUserRepo appUserRepo;
     private final ProjectRepo projectRepo;
     private final AppUserDTOMapper appUserDTOMapper;
+
+    private final PasswordEncoder passwordEncoder;
     //  private final IEmailService iEmailService;
 
-    public AppUserService(AppUserRepo appUserRepo, ProjectRepo projectRepo, AppUserDTOMapper appUserDTOMapper) {
+    public AppUserService(AppUserRepo appUserRepo, ProjectRepo projectRepo, AppUserDTOMapper appUserDTOMapper, PasswordEncoder passwordEncoder) {
         this.appUserRepo = appUserRepo;
         this.projectRepo = projectRepo;
         this.appUserDTOMapper = appUserDTOMapper;
-        //  this.iEmailService = iEmailService;
+        this.passwordEncoder = passwordEncoder;
     }
 
 
@@ -43,6 +46,7 @@ public class AppUserService implements IAppUserService, ICrud<AppUser> {
 //                    .subject("WELCOME")
 //                  .recipient(appUser.getEmailUser()).build();
 //            iEmailService.sendSimpleMail(emailDetails);
+            appUser.setPassword(passwordEncoder.encode(appUser.getPassword()));
             return appUserRepo.save(appUser);
 
         }
@@ -67,13 +71,18 @@ public class AppUserService implements IAppUserService, ICrud<AppUser> {
                 .build();
 
     }
+    public AppUser getAppUserLOG(Long id){
+        return appUserRepo.findById(id).orElseThrow(() -> new RuntimeException("No User With Id "+id));
+    }
 
 
     @Override
     public AppUser update(AppUser appUser) {
-        if (appUser != null)
+        if (appUser != null){
+            appUser.setPassword(passwordEncoder.encode(appUser.getPassword()));
             return appUserRepo.save(appUser);
-        return null;
+        }
+        throw  new RuntimeException("No User Found to Update!!");
     }
 
     @Override
@@ -99,7 +108,7 @@ public class AppUserService implements IAppUserService, ICrud<AppUser> {
                 .orElseThrow(() -> new NotFoundException("No Project with ID: " + projectId));
         AppUser appUser = appUserRepo.findById((long) devId)
                 .orElseThrow(() -> new NotFoundException("No Developer with ID: " + devId));
-        if (appUser.getRole() == Role.DEVELOPER) {
+        if (appUser.getRole() == Role.ROLE_DEVELOPER) {
             appUser.getDevelopersProjects().add(project);
             appUserRepo.save(appUser);
         } else
