@@ -4,7 +4,6 @@ import lombok.*;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.crypto.password.PasswordEncoder;
 
 import javax.persistence.*;
 import java.util.Collection;
@@ -23,10 +22,10 @@ public class AppUser implements UserDetails {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long idUser;
-    private String emailUser;
-    private String password;
     private String firstname;
     private String lastname;
+    private String emailUser;
+    private String password;
     @Enumerated(EnumType.STRING)
     private Role role;
 
@@ -42,18 +41,18 @@ public class AppUser implements UserDetails {
         return Collections.singletonList(new SimpleGrantedAuthority(this.getRole().name()));
     }
 
-    public void setPassword(String password) {
-        this.password = password;
-    }
-
     @Override
     public String getPassword() {
         return this.password;
     }
 
+    public void setPassword(String password) {
+        this.password = password;
+    }
+
     @Override
     public String getUsername() {
-        return this.firstname;
+        return this.emailUser;
     }
 
     @Override

@@ -1,7 +1,6 @@
 package com.nader.scrum.management.configuration;
 
 import com.nader.scrum.management.entities.AppUser;
-import com.nader.scrum.management.entities.Role;
 import com.nader.scrum.management.services.AppUserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
@@ -40,8 +39,7 @@ public class SecurityConfiguration {
 
     @Bean
     UserDetailsService userDetailsService() {
-        AppUser admin= appUserService.getAppUserLOG(6L);
-
+        AppUser admin = appUserService.getAppUserLOG(6L);
         return new InMemoryUserDetailsManager(
                 admin
         );
