@@ -10,6 +10,7 @@ import com.nader.scrum.management.services.interfaces.ICrud;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -41,6 +42,7 @@ public class AppUserController {
     }
 
     @PutMapping("updateUser")
+
     public ResponseEntity<AppUser> updateUser(@RequestBody AppUser user) {
         return ResponseEntity.status(HttpStatus.OK).body(userICrud.update(user));
     }
@@ -57,6 +59,7 @@ public class AppUserController {
     }
 
     @GetMapping("getAllUsers")
+    @PreAuthorize("hasRole('ROLE_MASTER')" )
     public ResponseEntity<List<AppUserDTO>> getAllUsers() {
         return ResponseEntity.ok().body(iAppUserService.getAllUsers());
     }
