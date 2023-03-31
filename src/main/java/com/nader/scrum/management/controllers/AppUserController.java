@@ -2,6 +2,9 @@ package com.nader.scrum.management.controllers;
 
 import com.nader.scrum.management.dto.AppUserDTO;
 import com.nader.scrum.management.entities.AppUser;
+import com.nader.scrum.management.entities.AuthenticationRequest;
+import com.nader.scrum.management.entities.AuthenticationResponse;
+import com.nader.scrum.management.entities.RegisterRequest;
 import com.nader.scrum.management.services.interfaces.IAppUserService;
 import com.nader.scrum.management.services.interfaces.ICrud;
 import lombok.RequiredArgsConstructor;
@@ -22,6 +25,19 @@ public class AppUserController {
     @PostMapping("addUser")
     public ResponseEntity<AppUser> addUser(@RequestBody AppUser user) {
         return ResponseEntity.status(HttpStatus.CREATED).body(userICrud.create(user));
+    }
+    @PostMapping("register")
+    public ResponseEntity<AuthenticationResponse> register(
+            @RequestBody RegisterRequest request)
+    {
+     return    ResponseEntity.ok(iAppUserService.register(request));
+    }
+
+    @PostMapping("authenticate")
+    public ResponseEntity<AuthenticationResponse> register(
+            @RequestBody AuthenticationRequest request)
+    {
+      return   ResponseEntity.ok(iAppUserService.authenticate(request));
     }
 
     @PutMapping("updateUser")

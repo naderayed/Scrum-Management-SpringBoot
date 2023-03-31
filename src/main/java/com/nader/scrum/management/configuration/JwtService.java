@@ -14,6 +14,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.function.Function;
 
+
 @Service
 public class JwtService {
     private static final  String SECRECT_KEY="48404D635166546A576E5A7234753778214125442A472D4A614E645267556B58";
@@ -33,7 +34,7 @@ public class JwtService {
                 .setSubject(userDetails.getUsername())
                 .setIssuedAt(new Date(System.currentTimeMillis()))
                 .setExpiration(new Date(System.currentTimeMillis()+1000*60*24))
-                .signWith(getSignInKey(), SignatureAlgorithm.ES256)
+                .signWith(getSignInKey(), SignatureAlgorithm.HS256)
                 .compact();
     }
 
