@@ -29,7 +29,8 @@ public class AppUser implements UserDetails {
     @Enumerated(EnumType.STRING)
     private Role role;
 
-
+    @OneToMany (mappedBy = "appUser")
+    private List<Token> tokens;
     @ManyToMany(fetch = FetchType.EAGER)
     private List<Project> developersProjects;
     @OneToMany

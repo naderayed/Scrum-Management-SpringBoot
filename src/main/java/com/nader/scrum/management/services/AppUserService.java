@@ -6,6 +6,7 @@ import com.nader.scrum.management.dto.mappers.AppUserDTOMapper;
 import com.nader.scrum.management.entities.*;
 import com.nader.scrum.management.repositories.AppUserRepo;
 import com.nader.scrum.management.repositories.ProjectRepo;
+import com.nader.scrum.management.repositories.TokenRepo;
 import com.nader.scrum.management.services.interfaces.IAppUserService;
 import com.nader.scrum.management.services.interfaces.ICrud;
 import lombok.RequiredArgsConstructor;
@@ -27,6 +28,7 @@ public class AppUserService implements IAppUserService, ICrud<AppUser> {
 
     private final AppUserRepo appUserRepo;
     private final ProjectRepo projectRepo;
+    private final TokenRepo tokenRepo;
     private final AppUserDTOMapper appUserDTOMapper;
 
     private final PasswordEncoder passwordEncoder;
@@ -146,11 +148,23 @@ public class AppUserService implements IAppUserService, ICrud<AppUser> {
                 .password(passwordEncoder.encode(request.getPassword()))
                 .role(Role.ROLE_DEVELOPER)
                 .build();
-        appUserRepo.save(user);
+        AppUser savedUser = appUserRepo.save(user);
         var jwtToken = jwtService.generateToken(user);
+        saveUSerToken(savedUser, jwtToken);
         return AuthenticationResponse.builder()
                 .token(jwtToken)
                 .build();
+    }
+
+    private void saveUSerToken(AppUser savedUser, String jwtToken) {
+        var token=  Token.builder()
+                  .appUser(savedUser)
+                .token(jwtToken)
+                .tokenType(TokenType.BEARER)
+                  .expired(false)
+                  .revoked(false)
+                  .build();
+        tokenRepo.save(token);
     }
 
     @Override
@@ -164,6 +178,7 @@ public class AppUserService implements IAppUserService, ICrud<AppUser> {
         var user =appUserRepo.findAppUserByEmailUser(request.getEmail())
                 .orElseThrow(() -> new RuntimeException("USer Not Found"));
         var jwtToken = jwtService.generateToken(user);
+            saveUSerToken(user,jwtToken);
         return AuthenticationResponse.builder()
                 .token(jwtToken)
                 .build();
