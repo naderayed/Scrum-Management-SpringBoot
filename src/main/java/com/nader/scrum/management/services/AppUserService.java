@@ -37,7 +37,6 @@ public class AppUserService implements IAppUserService, ICrud<AppUser> {
     private final AuthenticationManager authenticationManager;
 
 
-
     @Override
     public AppUser create(AppUser appUser) {
         Boolean found = appUserRepo.selectExistsEmail(appUser.getEmailUser());
@@ -72,18 +71,19 @@ public class AppUserService implements IAppUserService, ICrud<AppUser> {
                 .build();
 
     }
-    public AppUser getAppUserLOG(Long id){
-        return appUserRepo.findById(id).orElseThrow(() -> new RuntimeException("No User With Id "+id));
+
+    public AppUser getAppUserLOG(Long id) {
+        return appUserRepo.findById(id).orElseThrow(() -> new RuntimeException("No User With Id " + id));
     }
 
 
     @Override
     public AppUser update(AppUser appUser) {
-        if (appUser != null){
+        if (appUser != null) {
             appUser.setPassword(passwordEncoder.encode(appUser.getPassword()));
             return appUserRepo.save(appUser);
         }
-        throw  new RuntimeException("No User Found to Update!!");
+        throw new RuntimeException("No User Found to Update!!");
     }
 
     @Override
@@ -156,16 +156,6 @@ public class AppUserService implements IAppUserService, ICrud<AppUser> {
                 .build();
     }
 
-    private void saveUSerToken(AppUser savedUser, String jwtToken) {
-        var token=  Token.builder()
-                  .appUser(savedUser)
-                .token(jwtToken)
-                .tokenType(TokenType.BEARER)
-                  .expired(false)
-                  .revoked(false)
-                  .build();
-        tokenRepo.save(token);
-    }
 
     @Override
     public AuthenticationResponse authenticate(AuthenticationRequest request) {
@@ -175,12 +165,36 @@ public class AppUserService implements IAppUserService, ICrud<AppUser> {
                         request.getPassword()
                 )
         );
-        var user =appUserRepo.findAppUserByEmailUser(request.getEmail())
+        var user = appUserRepo.findAppUserByEmailUser(request.getEmail())
                 .orElseThrow(() -> new RuntimeException("USer Not Found"));
         var jwtToken = jwtService.generateToken(user);
-            saveUSerToken(user,jwtToken);
+        revokeAllUserTokens(user);
+        saveUSerToken(user, jwtToken);
         return AuthenticationResponse.builder()
                 .token(jwtToken)
                 .build();
+    }
+
+
+    private void saveUSerToken(AppUser savedUser, String jwtToken) {
+        var token = Token.builder()
+                .appUser(savedUser)
+                .token(jwtToken)
+                .tokenType(TokenType.BEARER)
+                .expired(false)
+                .revoked(false)
+                .build();
+        tokenRepo.save(token);
+    }
+
+    private void revokeAllUserTokens(AppUser savedUser) {
+        List<Token> allValidTokenByUser = tokenRepo.findAllValidTokenByUser(savedUser.getIdUser());
+        if(allValidTokenByUser.isEmpty())
+            return;
+        allValidTokenByUser.forEach(token -> {
+                        token.setExpired(true);
+                        token.setRevoked(true);
+                });
+        tokenRepo.saveAll(allValidTokenByUser);
     }
 }
